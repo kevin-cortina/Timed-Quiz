@@ -1,7 +1,6 @@
 *, * ::before, *::after {
     box-sizing: border-box;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-
 }
 
 body {
@@ -13,6 +12,10 @@ body {
     justify-content: center;
     align-items:center;
     background-color: teal;
+}
+
+.demo {
+    font-size: x-large;
 }
 
 .container {
@@ -59,3 +62,8 @@ padding: 10px 20px;
 .hide {
     display: none;
 }
+
+.timerClass{
+    box-align:center;
+}
+

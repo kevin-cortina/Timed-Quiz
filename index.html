@@ -11,6 +11,7 @@
 <header>
 </header>
 <body>
+<div id="main" >
   <div class = "container">
         <div id="question-container" class="hide" >
         <div id="question"> Question </div>
@@ -24,12 +25,45 @@
     <div class='controls'>
         <button id="start-btn" class="start-btn btn" > start </button>
         <button id="next-btn" class="next-btn btn hide" > next </button>
+        <button id="high-score" class="high-score btn hide">high-score</button>
     </div>
     <div>
         <div id= "startButtons"></div>
         <div class="timerClass" id= "countdown"></div>
     </div>
  </div>
+</div>
+
+ <section id="final" class="hide">
+    <div class="container">
+        <div class="col-3"></div>
+        <div class="col-6">
+            <h2>All done!</h2>
+            <p>Your final score is: <span id="score" class="pl-1">0</span></p>
+            <!-- <p class="score">Your final score is: </p> -->
+            <p>Enter initials: <span class="ml-1"><input placeholder="initials" id="initials" /></span>
+                <button id="submit-score" class="btn btn-success mx-1 my-1 d-inline-block">Submit</button>
+            </p>
+        </div>
+    </div>
+</section>
+
+            <!-- Section for High Scores -->
+<section id="highscores-container" class="hide">
+    <div class="container">
+        <div class="col-3"></div>
+            <div class="col-6">
+                <h2>High Scores</h2>
+                <!-- High scores should be added as a sorted desc list -->
+                <ol id="score-list">
+                <!-- <li></li> -->
+                </ol>
+                <button id="restart-button" class="btn btn-success d-inline-block mx-1 my-1">Restart</button>
+                <button id="clearscores" class="btn btn-success mx-1 my-1 d-inline-block">Clear scores</button>
+            </div>
+    </div>
+</section>
+
 
 </body>
 </html>

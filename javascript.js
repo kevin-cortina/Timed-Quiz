@@ -1,13 +1,26 @@
 var startButton = document.getElementById('start-btn')
 var nextButton = document.getElementById('next-btn')
+var highScoreButton = document.getElementById('high-score')
+var clearScoreButton = document.getElementById('clearscores')
 var questionContainerEl = document.getElementById ('question-container')
 var questionElement = document.getElementById('question')
+var finalContainer = document.getElementById('final')
+var mainContainer = document.getElementById('main')
+var highScoresContainer = document.getElementById('highscores-container')
+var submitButton = document.getElementById('submit-score')
+var restartButton = document.getElementById('restart-button')
+var startButtonsContainer = document.getElementById ('startButtons')
 var answerButtonsEl = document.getElementById('answer-buttons')
+var controlsButtonsEl = document.getElementById('controls')
 var countDown = document.getElementById("countdown")
 var timerClass = document.getElementsByClassName('timerClass')
+var button1 = document.getElementsByClassName('btn')
 var button2 = document.getElementsByClassName('btn correct')
+var initials = document.getElementById('initials')
 //added variables for timer
-
+let scoreListEl = document.querySelector("score-list");
+let scoreList = [];
+let timeleft = 100
 let shuffledQuestions, currentQuestionIndex
 
 startButton.addEventListener('click', startGame)
@@ -41,7 +54,11 @@ function showQuestion(question) {
         button.classList.add('btn')
         if (answer.correct) {
             button.dataset.correct = answer.correct
-        } 
+        } else { 
+          button.addEventListener('click', function () {
+          timeleft = timeleft - 10 
+        });
+      }
         button.addEventListener('click', selectAnswer)
         answerButtonsEl.appendChild(button)
     })
@@ -69,6 +86,7 @@ function selectAnswer(e) {
 	} else {
 		startButton.innerText = 'restart'
     startButton.classList.remove('hide')
+    highScoreButton.classList.remove('hide')
   }
 }
 
@@ -90,7 +108,7 @@ function clearStatusClass(element) {
 
 // starting timer code
 startButton.addEventListener("click", function function1() {
-  let timeleft = 100
+  var button3 = startButton.innerText 
   var downloadTimer = setInterval(function function2(){
       countDown.innerHTML = timeleft + 
       "&nbsp"+"seconds remaining";
@@ -99,41 +117,118 @@ startButton.addEventListener("click", function function1() {
         if(timeleft <= 0) {
         clearInterval(downloadTimer);
         countDown.innerHTML = "Time is up!"
-        startButton.innerText = 'restart'
-        startButton.classList.remove('hide')
         }
       //pause timer code
         if (shuffledQuestions.length > currentQuestionIndex + 1) {
         } else {
-          clearInterval(downloadTimer)
-          console.log(timeleft + 1);
-          }
-        }, 1000);
-  //reset timer code
-  if (startButton.innerText === 'restart') {
-    console.log('this is targeting restart button')
-    startButton.addEventListener('click', function () {
-    clearInterval(downloadTimer);
-    });
-    }
-  //working on penalty code  
-  if (button2 = 'true') {
-    element.classList.addEventListener('click', function () {
-    console.log('right?');
-    
-     });
-  }
-    // button2.addEventListener('click', function () {
-    // timeleft = timeleft - 10 
-    // console.log('targeting wrong answers');
-    // });
+          answerButtonsEl.addEventListener('click', function stopTimerFunc() {
+            clearInterval(downloadTimer);
+            var timeleft1 = timeleft + 1;
+            countDown.innerText = timeleft1 +" seconds remaining";
+            localStorage.setItem('timeleft1', JSON.stringify(timeleft1));
+          })
+        }
+    }, 1000);
+  //reset timer
+  if (button3 = 'restart') {
+      startButton.addEventListener('click', function restartFunc() {
+        timeleft = 100
+        highScoreButton.classList.add('hide')
+      })
+  };
+});
+
+//highscores-submit
+
+highScoreButton.addEventListener("click", function function1() {
+  highScoreButton.classList.add('hide')
+  mainContainer.classList.add('hide')
+  finalContainer.classList.remove('hide')
+  startButtonsContainer.classList.add('hide')
+  // startButton.classList.add('hide')
+  console.log('1')
+
+  //retrieve the object from storage
+let retrievedObject = localStorage.getItem('timeleft1');
+console.log('retrievedObject:', JSON.parse(retrievedObject));
+
+//final score text
+document.getElementById('score').innerText = JSON.parse(retrievedObject);
+
+submitButton.addEventListener("click", function (e) {
+  // initials.addEventListener('submit', function (e) {
+  //   prevent the normal submission of the form
+  e.preventDefault();
+  var initials2 = document.getElementById('initials').value;
+  //2nd part of submit
+    var initialsInput = initials2;
+    //test to make sure intials are working 
+    //console.log(initialsInput); 
+    localStorage.setItem('initialsInput', JSON.stringify(initialsInput));
+    //code for intials usage here for checking
+    let retrievedObject2 = localStorage.getItem('initialsInput');
+    console.log('retrievedObject2:', JSON.parse(retrievedObject2));
   })
+});
+
+submitButton.addEventListener("click", function () {
+  console.log('2')
+  finalContainer.classList.add('hide')
+  highScoresContainer.classList.remove('hide')
+});
 
 
+// });
+//code for intials usage
+// let retrievedObject2 = localStorage.getItem('initialsInput');
+// console.log('retrievedObject2:', JSON.parse(retrievedObject2));
 
+//////////////////////////////////////////////////////////////////////////
 
+//highscores-screen
+restartButton.addEventListener("click", function function1() {
+console.log(5)
+});
 
+function addScore(event) {
+  let retrievedObject = localStorage.getItem('timeleft1');
+  let retrievedObject2 = localStorage.getItem('initialsInput');
 
+  let init = retrievedObject2.value.toUpperCase();
+  let timeScore = retrievedObject.value;
+  scoreList.push({init, timeScore});
+
+// sort scores
+scoreList = scoreList.sort((a, b) => {
+    if (a.score < b.score) {
+      return 1;
+    } else {
+      return -1;
+    }
+  });
+
+scoreListEl.innerHTML="";
+for (let i = 0; i < scoreList.length; i++) {
+    let li = document.createElement("li");
+    li.textContent = `${scoreList[i].init}: ${scoreList[i].timeScore}`;
+    scoreListEl.append(li);
+}
+
+// Add to local storage
+storeScores();
+displayScores();
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+// clear scores
+function clearScores() {
+  // localStorage.clear();
+  // scoreListEl.innerHTML="";
+  console.log(6)
+}
+
+clearScoreButton.addEventListener("click", clearScores);
 
 //Quiz Questions
 var questions = [
@@ -147,7 +242,7 @@ var questions = [
         ]
       },
       {
-        question: 'What is 5 + 8',
+        question: 'What is 5 + 8?',
         answers: [
           { text: '15', correct: false },
           { text: '19', correct: false },
@@ -156,12 +251,12 @@ var questions = [
         ]
       },
       {
-        question: 'Is web development fun?',
+        question: 'What is 1+1?',
         answers: [
-          { text: 'Kinda', correct: false },
-          { text: 'YES!!!', correct: true },
-          { text: 'Um no', correct: false },
-          { text: 'IDK', correct: false }
+          { text: '3', correct: false },
+          { text: '2', correct: true },
+          { text: '3', correct: false },
+          { text: '3', correct: false }
         ]
       },
       {

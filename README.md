@@ -13,7 +13,7 @@ The basis of this assignment was to create a timed quiz that can save high-score
 
 -When the game is over, you can save your initials and your score
 
-link to delopyed application: https://kevin-cortina.github.io/Password_generator/
+link to delopyed application: https://kevin-cortina.github.io/Timed-Quiz/
 
 Screenshot of Application
 

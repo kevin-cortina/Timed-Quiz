@@ -19,13 +19,21 @@ body {
 }
 
 .container {
-    width: 800px;
-    max-width: 80%;
+    width: 600px;
     background-color: white;
     border-radius: 5px;
     padding: 10px;
     box-shadow: 0 0 10px 2px;
 }
+
+#message, #countdown {
+    margin-left: 37%;
+}
+
+#countdown {
+    margin-left: 34%;
+}
+
 
 .btn-grid {
     display: grid;
@@ -57,6 +65,8 @@ padding: 10px 20px;
     display: flex;
     justify-content: center;
     align-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .hide {
@@ -65,5 +75,9 @@ padding: 10px 20px;
 
 .timerClass{
     box-align:center;
+}
+
+#intialsScore, #timeScore { 
+    display: inline-block; 
 }
 

@@ -17,8 +17,13 @@ var timerClass = document.getElementsByClassName('timerClass')
 var button1 = document.getElementsByClassName('btn')
 var button2 = document.getElementsByClassName('btn correct')
 var initials = document.getElementById('initials')
+var initialsScoreScreen = document.getElementById('intialsScore')
+var timeScoreScreen= document.getElementById('timeScore')
+var mainContent = document.getElementById('mainContents')
+var message = document.getElementById('message')
+
 //added variables for timer
-let scoreListEl = document.querySelector("score-list");
+let scoreListEl = document.getElementById("score-list")
 let scoreList = [];
 let timeleft = 100
 let shuffledQuestions, currentQuestionIndex
@@ -30,7 +35,6 @@ nextButton.addEventListener('click', () => {
 })
 
 //starts game
-//hides start button after pressed
 function startGame () {
     startButton.classList.add('hide')
     shuffledQuestions = questions.sort(() => Math.random () - .5 )
@@ -54,15 +58,27 @@ function showQuestion(question) {
         button.classList.add('btn')
         if (answer.correct) {
             button.dataset.correct = answer.correct
+            button.addEventListener('click', function () {
+              message.innerText= ("Correct, Move on!!!") 
+              nextButton.classList.remove('hide')
+              answerButtonsEl.disabled = true
+              //ending message of quiz
+              if (shuffledQuestions.length > currentQuestionIndex + 1) {
+              }  else {
+                message.innerText = ('YOU ARE ALL DONE!!!')  
+              }
+        });
         } else { 
           button.addEventListener('click', function () {
-          timeleft = timeleft - 10 
+          timeleft = timeleft - 10
+          message.innerText = ('Wrong! -10 secs') 
+          nextButton.classList.add('hide')
         });
       }
         button.addEventListener('click', selectAnswer)
         answerButtonsEl.appendChild(button)
     })
-}
+  }
 
 //resets questions at the end of quiz
 function resetState() {
@@ -82,12 +98,13 @@ function selectAnswer(e) {
             setStatusClass(button, button.dataset.correct)
         })
 	if (shuffledQuestions.length > currentQuestionIndex + 1) {
-	nextButton.classList.remove('hide')
+
 	} else {
 		startButton.innerText = 'restart'
-    startButton.classList.remove('hide')
+    startButton.classList.remove('hide') 
     highScoreButton.classList.remove('hide')
-  }
+    nextButton.classList.add('hide')
+  } 
 }
 
 //adds the button to tell whether the answer was right or wrong
@@ -117,6 +134,11 @@ startButton.addEventListener("click", function function1() {
         if(timeleft <= 0) {
         clearInterval(downloadTimer);
         countDown.innerHTML = "Time is up!"
+        message.innerText = "YOU ARE ALL DONE!!!"
+        startButton.classList.remove('hide')
+        startButton.innerText = 'Restart'
+        highScoreButton.classList.remove ('hide')
+        questionContainerEl.classList.add('hide')
         }
       //pause timer code
         if (shuffledQuestions.length > currentQuestionIndex + 1) {
@@ -134,6 +156,8 @@ startButton.addEventListener("click", function function1() {
       startButton.addEventListener('click', function restartFunc() {
         timeleft = 100
         highScoreButton.classList.add('hide')
+        message.innerText = ""
+        questionContainerEl.classList.remove('hide')
       })
   };
 });
@@ -146,86 +170,47 @@ highScoreButton.addEventListener("click", function function1() {
   finalContainer.classList.remove('hide')
   startButtonsContainer.classList.add('hide')
   // startButton.classList.add('hide')
-  console.log('1')
 
   //retrieve the object from storage
-let retrievedObject = localStorage.getItem('timeleft1');
-console.log('retrievedObject:', JSON.parse(retrievedObject));
+  let timeLeftScore = localStorage.getItem('timeleft1');
+  //final score text
+  document.getElementById('score').innerText = JSON.parse(timeLeftScore);
 
-//final score text
-document.getElementById('score').innerText = JSON.parse(retrievedObject);
-
-submitButton.addEventListener("click", function (e) {
-  // initials.addEventListener('submit', function (e) {
-  //   prevent the normal submission of the form
-  e.preventDefault();
-  var initials2 = document.getElementById('initials').value;
-  //2nd part of submit
-    var initialsInput = initials2;
-    //test to make sure intials are working 
-    //console.log(initialsInput); 
-    localStorage.setItem('initialsInput', JSON.stringify(initialsInput));
-    //code for intials usage here for checking
-    let retrievedObject2 = localStorage.getItem('initialsInput');
-    console.log('retrievedObject2:', JSON.parse(retrievedObject2));
-  })
+//local storage functions
+  submitButton.addEventListener("click", function (e) {
+    e.preventDefault();
+    let initialsInput = initials.value
+    localStorage.setItem('initials', JSON.stringify(initialsInput));
+    let storedIntials = localStorage.getItem('initials');
+    let initialJson = ('Initials', storedIntials.replace(/\"/g, ""));
+    let scoreJson = ('Score', timeLeftScore);
+    initialsScoreScreen.innerText = initialJson  
+    timeScoreScreen.innerText = scoreJson  
+    })
 });
 
+//button maintenance
 submitButton.addEventListener("click", function () {
-  console.log('2')
   finalContainer.classList.add('hide')
   highScoresContainer.classList.remove('hide')
 });
 
 
-// });
-//code for intials usage
-// let retrievedObject2 = localStorage.getItem('initialsInput');
-// console.log('retrievedObject2:', JSON.parse(retrievedObject2));
-
-//////////////////////////////////////////////////////////////////////////
-
 //highscores-screen
-restartButton.addEventListener("click", function function1() {
-console.log(5)
+restartButton.addEventListener("click", function () {
+  startButton.classList.add('hide')
+highScoresContainer.classList.add('hide')
+mainContainer.classList.remove('hide')
+resetState()
+setNextQuestion()
+timeleft = 100
+highScoreButton.classList.add('hide')
+location.reload(mainContent)
 });
 
-function addScore(event) {
-  let retrievedObject = localStorage.getItem('timeleft1');
-  let retrievedObject2 = localStorage.getItem('initialsInput');
-
-  let init = retrievedObject2.value.toUpperCase();
-  let timeScore = retrievedObject.value;
-  scoreList.push({init, timeScore});
-
-// sort scores
-scoreList = scoreList.sort((a, b) => {
-    if (a.score < b.score) {
-      return 1;
-    } else {
-      return -1;
-    }
-  });
-
-scoreListEl.innerHTML="";
-for (let i = 0; i < scoreList.length; i++) {
-    let li = document.createElement("li");
-    li.textContent = `${scoreList[i].init}: ${scoreList[i].timeScore}`;
-    scoreListEl.append(li);
-}
-
-// Add to local storage
-storeScores();
-displayScores();
-}
-
-//////////////////////////////////////////////////////////////////////////
-
-// clear scores
 function clearScores() {
-  // localStorage.clear();
-  // scoreListEl.innerHTML="";
-  console.log(6)
+  localStorage.clear();
+  location.reload(mainContent)
 }
 
 clearScoreButton.addEventListener("click", clearScores);

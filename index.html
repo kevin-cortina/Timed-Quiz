@@ -4,13 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="/Users/kcortina/Desktop/style.css" rel="stylesheet">
-    <script defer src="/Users/kcortina/UW-Bootcamp/Homework/Timed-Quiz/javascript.js"></script>
+    <link href="./assets/stylesheet/style.css" rel="stylesheet">
+    <script defer src="./assets/javascript/javascript.js"></script>
     <title> Quiz Application</title>
 </head>
 <header>
+
+
 </header>
 <body>
+<div id ="mainContents">
 <div id="main" >
   <div class = "container">
         <div id="question-container" class="hide" >
@@ -25,13 +28,17 @@
     <div class='controls'>
         <button id="start-btn" class="start-btn btn" > start </button>
         <button id="next-btn" class="next-btn btn hide" > next </button>
-        <button id="high-score" class="high-score btn hide">high-score</button>
+        <button id="high-score" class="high-score btn hide">Check your Score!</button>
     </div>
     <div>
-        <div id= "startButtons"></div>
-        <div class="timerClass" id= "countdown"></div>
-    </div>
+            <div id= "startButtons"></div>
+            <div id="message"> </div>
+            <div class ="timer-container">
+                <div class="timerClass" id= "countdown"></div>
+            </div>
+</div>
  </div>
+</div>
 </div>
 
  <section id="final" class="hide">
@@ -56,6 +63,8 @@
                 <h2>High Scores</h2>
                 <!-- High scores should be added as a sorted desc list -->
                 <ol id="score-list">
+                    <ul id="intialsScore"> text </ul>
+                    <ul id="timeScore"> text</ul>
                 <!-- <li></li> -->
                 </ol>
                 <button id="restart-button" class="btn btn-success d-inline-block mx-1 my-1">Restart</button>
